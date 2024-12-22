@@ -7,8 +7,6 @@ from ttforge.core import TTForgeObject, ttforge_object
 
 from .exceptions import CharacteristicInvalid
 
-from ttforge.core.registry import validateRegistryID, TTForgeValidateRegistryIDError
-
 @dataclass
 class CharacteristicUpdateEvent:
     regID: str

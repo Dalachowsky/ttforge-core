@@ -8,7 +8,6 @@ from .exceptions import CharacteristicInvalid
 
 from ttforge.core.dice import IDie
 from ttforge.core.exception import DoesNotDepend
-from ttforge.core.registry import RegistryID, validateRegistryID, TTForgeValidateRegistryIDError
 
 LOG = logging.getLogger(f"{__name__}")
 

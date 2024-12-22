@@ -1,9 +1,7 @@
 
 from .registry_base import RegistryBase
-from .registry_base import RegistryDict
-
-from .utils import validateRegistryID
-from .utils import TTForgeValidateRegistryIDError
+from .registry_dict import RegistryDict
+from .registry_main import RegistryMain
 
 class RegistryID(str):
 

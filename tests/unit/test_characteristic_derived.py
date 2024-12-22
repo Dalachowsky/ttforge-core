@@ -5,7 +5,7 @@ from typing import *
 from ttforge.core.characteristic import CharacteristicDerivedBase, characteristicDerived
 from ttforge.core.characteristic import characteristicPrimary
 from ttforge.core.characteristic import CharacteristicPrimary
-from ttforge.core.characteristic.exceptions import DoesNotDepend
+from ttforge.core.exception import DoesNotDepend
 
 NS = "ns"
 

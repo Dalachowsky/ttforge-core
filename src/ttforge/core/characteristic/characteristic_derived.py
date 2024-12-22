@@ -4,10 +4,10 @@ from typing import *
 from abc import ABC, abstractmethod
 
 from .characteristic_base import CharacteristicBase, characteristic_base, ICharacteristicObserver, CharacteristicUpdateEvent
-from .exceptions import CharacteristicInvalid, DoesNotDepend
+from .exceptions import CharacteristicInvalid
 
 from ttforge.core.dice import IDie
-from ttforge.core.exception import TTForgeException
+from ttforge.core.exception import DoesNotDepend
 from ttforge.core.registry import RegistryID, validateRegistryID, TTForgeValidateRegistryIDError
 
 LOG = logging.getLogger(f"{__name__}")

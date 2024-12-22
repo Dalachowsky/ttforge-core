@@ -1,0 +1,3 @@
+
+class TTForgeException(Exception):
+    pass

@@ -3,7 +3,7 @@ import pytest
 import pytest_mock
 
 from ttforge.core.characteristic.exceptions import CharacteristicOutOfBounds
-from ttforge.core.registry import TTForgeValidateRegistryIDError
+from ttforge.core import TTForgeObjectInvalid
 from ttforge.core.characteristic import CharacteristicPrimary, CharacteristicInvalid, characteristicPrimary
 from ttforge.core.dice import D6
 
@@ -24,7 +24,7 @@ def test_minimal_definition():
 
 def test_validate_no_name():
 
-    with pytest.raises(CharacteristicInvalid):
+    with pytest.raises(TTForgeObjectInvalid):
         @characteristicPrimary(NS)
         class Characteristic(CharacteristicPrimary):
 
@@ -32,7 +32,7 @@ def test_validate_no_name():
                 return 0
 
 def test_cant_derive_registry_id():
-    with pytest.raises(CharacteristicInvalid):
+    with pytest.raises(TTForgeObjectInvalid):
         @characteristicPrimary(NS)
         class Characteristic(CharacteristicPrimary):
             NAME = "Invalid characters':;#"

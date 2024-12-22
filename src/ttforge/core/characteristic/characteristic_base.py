@@ -3,7 +3,7 @@ from typing import *
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from ttforge.core import observable
+from ttforge.core import TTForgeObject, ttforge_object
 
 from .exceptions import CharacteristicInvalid
 
@@ -20,7 +20,7 @@ class ICharacteristicObserver(ABC):
     def onCharacteristicUpdate(self, event: CharacteristicUpdateEvent):
         pass
 
-class CharacteristicBase(ABC):
+class CharacteristicBase(TTForgeObject, ABC):
 
     NAME: str = None
     ABBREV: str = None
@@ -45,19 +45,7 @@ class CharacteristicBase(ABC):
 def characteristic_base(namespace: str):
     '''Decorator for Characteristic'''
     def decorator(cls: type[CharacteristicBase]):
-        if cls.NAME is None:
-            raise CharacteristicInvalid("Characteristic does not have name set")
-
-        # Set registry ID
-        if cls.ID is None:
-            regID = cls.NAME.lower().replace(' ','_')
-            try:
-                validateRegistryID(regID)
-            except TTForgeValidateRegistryIDError as e:
-                raise CharacteristicInvalid(f"Characteristic \"{cls.NAME}\" does not have registry ID set and trying to derive it from name returned {regID} -> {e}")
-            cls.ID = regID
-        cls.REGISTRY_ID = f"{namespace}:{cls.ID}"
-
+        ttforge_object(namespace)(cls)
         # Set abbreviated name
         if cls.ABBREV is None:
             vowels = "aeiou"

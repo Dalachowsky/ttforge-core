@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 class RegistryMainEntryType(Enum):
     CHARACTERISTIC = 0
     SKILL = auto()
-    RESOURCE = auto()
+    RESOURCE_POOL = auto()
     ITEM = auto()
 
 @dataclass

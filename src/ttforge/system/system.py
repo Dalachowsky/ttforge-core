@@ -3,6 +3,7 @@ from typing import *
 
 from ttforge.core.registry import RegistryDict
 from ttforge.core.characteristic import CharacteristicPrimary, CharacteristicDerivedBase
+from ttforge.core.item import ItemBase
 from ttforge.core.registry import RegistryMain
 from ttforge.core.registry.registry_main import RegistryMainEntryType
 from ttforge.core.resourcepool import ResourcePoolBase
@@ -41,3 +42,7 @@ class TTForgeSystem:
     def registerResourcePool(self, pool: type[ResourcePoolBase]):
         self.registry.MAIN.register(pool.REGISTRY_ID, pool, RegistryMainEntryType.RESOURCE_POOL)
         self.registry.RESOURCE_POOLS.register(pool.REGISTRY_ID, pool)
+
+    def registerItem(self, itemType: type[ItemBase]):
+        self.registry.MAIN.register(itemType.REGISTRY_ID, itemType, RegistryMainEntryType.ITEM)
+        self.registry.RESOURCE_POOLS.register(itemType.REGISTRY_ID, itemType)

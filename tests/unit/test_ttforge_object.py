@@ -1,7 +1,7 @@
 
 import pytest
 
-from ttforge.core import TTForgeObject, tag, ttforge_object
+from ttforge.core import TTForgeObject, tag, ttforge_object, tagIcon
 from ttforge.core.exception import TTForgeException
 
 NS = "test"
@@ -41,3 +41,12 @@ def test_tag_main_decorator():
         NAME = "Example"
     
     assert Example.TAGS["foo"] == "bar"
+
+def test_tag_icon():
+
+    @ttforge_object(NS)
+    @tagIcon("icon.png")
+    class Example(TTForgeObject):
+        NAME = "Example"
+
+    assert Example.TAGS["core:icon"] == "icon.png"

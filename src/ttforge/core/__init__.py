@@ -1,2 +1,2 @@
 
-from .ttforge_object import TTForgeObject, ttforge_object, TTForgeObjectInvalid, tag
+from .ttforge_object import TTForgeObject, ttforge_object, TTForgeObjectInvalid, tag, tagIcon

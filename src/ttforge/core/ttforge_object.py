@@ -40,6 +40,16 @@ def tag(tagID: str, tagValue: Any = None):
         return cls
     return decorator
 
+def tagIcon(iconPath: str):
+    """
+    Add core:icon tag to class.
+    This tag is recommended for setting the displayed icon in UI
+    """
+    def decorator(cls: type[TTForgeObject]):
+        tag("core:icon", iconPath)(cls)
+        return cls
+    return decorator
+
 def ttforge_object(namespace: str, tags: Dict[str, Any] = {}):
     def decorator(cls: type[TTForgeObject]):
         if cls.NAME is None:

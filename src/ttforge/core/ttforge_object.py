@@ -1,9 +1,12 @@
 
 import re
+import logging
 from typing import *
 from abc import ABC
 
 from ttforge.core.exception import TTForgeException
+
+LOG = logging.getLogger(f"{__name__}")
 
 class TTForgeValidateRegistryIDError(TTForgeException):
     def __init__(self, registryID: str, message: str):
@@ -25,11 +28,26 @@ class TTForgeObject(ABC):
     NAME: str = None
     ID: str = None
     REGISTRY_ID: str = None
+    TAGS: Dict[str, Any] = {}
 
-def ttforge_object(namespace: str):
+def tag(tagID: str, tagValue: Any = None):
+    def decorator(cls: type[TTForgeObject]):
+        if not hasattr(cls, "TAGS"):
+            raise TTForgeException(f"Class {cls} is not taggable")
+        if tagID in cls.TAGS:
+            LOG.warning(f"TAG \"{tagID}\" already present in {cls.NAME} overriding value {cls.TAGS[tagID]} with {tagValue}")
+        cls.TAGS[tagID] = tagValue
+        return cls
+    return decorator
+
+def ttforge_object(namespace: str, tags: Dict[str, Any] = {}):
     def decorator(cls: type[TTForgeObject]):
         if cls.NAME is None:
             raise TTForgeObjectInvalid("Characteristic does not have name set")
+
+        # Set TAGS
+        for k, v in tags.items():
+            tag(k, v)(cls)
 
         # Set registry ID
         if cls.ID is None:

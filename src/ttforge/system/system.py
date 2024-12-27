@@ -9,11 +9,14 @@ from ttforge.core.resourcepool import ResourcePoolBase
 from ttforge.core.skill import SkillBase
 
 class TTForgeSystemRegistries:
-    MAIN = RegistryMain()
-    CHARACTERISTICS = RegistryDict(CharacteristicPrimary)
-    CHARACTERISTICS_DERIVED = RegistryDict(CharacteristicDerivedBase)
-    SKILLS = RegistryDict(SkillBase)
-    RESOURCE_POOLS = RegistryDict(ResourcePoolBase)
+
+    def __init__(self) -> None:
+        self.MAIN = RegistryMain()
+        self.CHARACTERISTICS = RegistryDict(CharacteristicPrimary)
+        self.CHARACTERISTICS_DERIVED = RegistryDict(CharacteristicDerivedBase)
+        self.SKILLS = RegistryDict(SkillBase)
+        self.RESOURCE_POOLS = RegistryDict(ResourcePoolBase)
+        self.ITEMS = RegistryDict(ItemBase)
 
 class TTForgeSystem:
 

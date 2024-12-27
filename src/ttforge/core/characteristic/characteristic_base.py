@@ -3,7 +3,7 @@ from typing import *
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from ttforge.core import TTForgeObject, ttforge_object
+from ttforge.core import TTForgeObject, ttforge_object, ttforgeObjectClassFromJSON
 
 from .exceptions import CharacteristicInvalid
 
@@ -39,6 +39,16 @@ class CharacteristicBase(TTForgeObject, ABC):
         event = CharacteristicUpdateEvent(self.REGISTRY_ID, self._value)
         for observer in self._observers:
             observer.onCharacteristicUpdate(event)
+
+dynamicChClassesCount = 0
+def characteristicBaseClassFromJSON(namespace: str, d: dict):
+    global dynamicChClassesCount
+    cls = type(f"CharacteristicClass{dynamicChClassesCount}", (CharacteristicBase, ), {})
+    dynamicChClassesCount += 1
+    ttforgeObjectClassFromJSON(cls, namespace, d)
+    cls.ABBREV = d.get("abbrev", None)
+    characteristic_base(namespace)(cls)
+    return cls
 
 def characteristic_base(namespace: str):
     '''Decorator for Characteristic'''

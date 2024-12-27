@@ -71,3 +71,10 @@ def ttforge_object(namespace: str, tags: Dict[str, Any] = {}):
 
         return cls
     return decorator
+
+def ttforgeObjectClassFromJSON(cls, namespace: str, d: dict):
+        cls.NAME = d["name"]
+        cls.ID = d.get("id", None)
+        cls.REGISTRY_ID = d.get("registryID", None)
+        ttforge_object(namespace)(cls)
+        return cls

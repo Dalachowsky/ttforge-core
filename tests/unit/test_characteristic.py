@@ -4,7 +4,7 @@ import pytest_mock
 
 from ttforge.core.characteristic.exceptions import CharacteristicOutOfBounds
 from ttforge.core import TTForgeObjectInvalid
-from ttforge.core.characteristic import CharacteristicPrimary, CharacteristicInvalid, characteristicPrimary
+from ttforge.core.characteristic import *
 from ttforge.core.dice import D6
 
 NS = "ns"
@@ -69,3 +69,16 @@ def test_bounds_check(min, max):
         with pytest.raises(CharacteristicOutOfBounds):
             Characteristic(max + 1)    
 
+def test_fromJSON():
+
+    d = {
+        "name": "Mock",
+        "abbrev": "MOCK"
+    }
+
+    Mock = characteristicBaseClassFromJSON(NS, d)
+
+    assert Mock.NAME == "Mock"
+    assert Mock.ID == "mock"
+    assert Mock.REGISTRY_ID == "ns:mock"
+    assert Mock.ABBREV == "MOCK"

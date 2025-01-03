@@ -12,6 +12,14 @@ class TTForgeValidateRegistryIDError(TTForgeException):
     def __init__(self, registryID: str, message: str):
         super().__init__(f"registry ID \"{registryID}\" is invalid. {message}")
 
+def objectNameToID(objectName: str):
+    objectName = objectName.lower().replace(' ','_')
+    objectName = re.sub('[^0-9a-zA-Z_]+', '', objectName) # Remove all non alphanumeric characters
+    return objectName
+
+def generateRegistryID(namespace: str, ID: str):
+    return f"{namespace}:{ID}"
+
 def validateRegistryID(registryID: str):
     if registryID == "":
         raise TTForgeValidateRegistryIDError(registryID, "Is empty")
@@ -61,13 +69,13 @@ def ttforge_object(namespace: str, tags: Dict[str, Any] = {}):
 
         # Set registry ID
         if cls.ID is None:
-            regID = cls.NAME.lower().replace(' ','_')
+            regID = objectNameToID(cls.NAME)
             try:
                 validateRegistryID(regID)
             except TTForgeValidateRegistryIDError as e:
                 raise TTForgeObjectInvalid(f"Characteristic \"{cls.NAME}\" does not have registry ID set and trying to derive it from name returned {regID} -> {e}")
             cls.ID = regID
-        cls.REGISTRY_ID = f"{namespace}:{cls.ID}"
+        cls.REGISTRY_ID = generateRegistryID(namespace, cls.ID)
 
         return cls
     return decorator

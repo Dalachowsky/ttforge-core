@@ -4,6 +4,7 @@ from .characteristic_base import CharacteristicInvalid
 from .characteristic_base import ICharacteristicObserver
 from .characteristic_base import CharacteristicUpdateEvent
 from .characteristic_base import characteristicBaseClassFromJSON
+from .characteristic_base import generateCharacteristicAbbrev
 
 from .characteristic_primary import CharacteristicPrimary
 from .characteristic_primary import CharacteristicOutOfBounds

@@ -31,12 +31,6 @@ def test_validate_no_name():
             def rollCheck(self):
                 return 0
 
-def test_cant_derive_registry_id():
-    with pytest.raises(TTForgeObjectInvalid):
-        @characteristicPrimary(NS)
-        class Characteristic(CharacteristicPrimary):
-            NAME = "Invalid characters':;#"
-
 def test_double_inheritance():
 
     class Characteristic(CharacteristicPrimary):

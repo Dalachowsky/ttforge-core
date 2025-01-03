@@ -50,16 +50,19 @@ def characteristicBaseClassFromJSON(namespace: str, d: dict):
     characteristic_base(namespace)(cls)
     return cls
 
+def generateCharacteristicAbbrev(name: str):
+    vowels = "aeiou"
+    abbrev = "".join(
+        [c for c in name if c.lower() not in vowels and c.isalpha()]
+    ).upper()
+    return abbrev
+
 def characteristic_base(namespace: str):
     '''Decorator for Characteristic'''
     def decorator(cls: type[CharacteristicBase]):
         ttforge_object(namespace)(cls)
         # Set abbreviated name
         if cls.ABBREV is None:
-            vowels = "aeiou"
-            abbrev = "".join(
-                [c for c in cls.NAME if c.lower() not in vowels and c.isalpha()]
-            ).upper()
-            cls.ABBREV = abbrev
+            cls.ABBREV = generateCharacteristicAbbrev(cls.NAME)
         return cls
     return decorator

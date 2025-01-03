@@ -11,6 +11,14 @@ from ttforge.core.skill import SkillBase, skill
 
 NS = "test"
 
+@pytest.fixture(autouse=True)
+def clear_singleton():
+    yield
+    TTForgeSystem.clear()
+
+def test_singleton():
+    pass
+
 def test_register_each_type():
     @characteristicPrimary(NS)
     class MockCharacteristic(CharacteristicPrimary):
@@ -40,11 +48,11 @@ def test_register_each_type():
         NAME = "Sword"
 
     sys = TTForgeSystem()
-    sys.registerCharacteristicPrimary(MockCharacteristic)
-    sys.registerCharacteristicDerived(MockModifier)
-    sys.registerSkill(MockSkill)
-    sys.registerResourcePool(HealthPool)
-    sys.registerItem(Sword)
+    sys.registry.registerCharacteristicPrimary(MockCharacteristic)
+    sys.registry.registerCharacteristicDerived(MockModifier)
+    sys.registry.registerSkill(MockSkill)
+    sys.registry.registerResourcePool(HealthPool)
+    sys.registry.registerItem(Sword)
 
 def test_duplicate_registry_ID_different_type():
 
@@ -57,6 +65,6 @@ def test_duplicate_registry_ID_different_type():
         NAME = "Mock"
 
     sys = TTForgeSystem()
-    sys.registerCharacteristicPrimary(MockCharacteristic)
+    sys.registry.registerCharacteristicPrimary(MockCharacteristic)
     with pytest.raises(DuplicateEntry):
-        sys.registerSkill(MockSkill)
+        sys.registry.registerSkill(MockSkill)

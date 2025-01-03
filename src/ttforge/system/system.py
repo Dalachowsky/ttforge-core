@@ -19,30 +19,48 @@ class TTForgeSystemRegistries:
         self.RESOURCE_POOLS = RegistryDict(ResourcePoolBase)
         self.ITEMS = RegistryDict(ItemBase)
 
-class TTForgeSystem:
-
-    def __init__(self):
-        self.registry = TTForgeSystemRegistries()
-
     def registerCharacteristicPrimary(self, characteristic: Type[CharacteristicPrimary]):
         # TODO raise
-        self.registry.MAIN.register(characteristic.REGISTRY_ID, characteristic, RegistryMainEntryType.CHARACTERISTIC)
-        self.registry.CHARACTERISTICS.register(characteristic.REGISTRY_ID, characteristic)
+        self.MAIN.register(characteristic.REGISTRY_ID, characteristic, RegistryMainEntryType.CHARACTERISTIC)
+        self.CHARACTERISTICS.register(characteristic.REGISTRY_ID, characteristic)
 
     def registerCharacteristicDerived(self, characteristic: Type[CharacteristicDerivedBase]):
         # TODO raise
-        self.registry.MAIN.register(characteristic.REGISTRY_ID, characteristic, RegistryMainEntryType.CHARACTERISTIC)
-        self.registry.CHARACTERISTICS_DERIVED.register(characteristic.REGISTRY_ID, characteristic)
+        self.MAIN.register(characteristic.REGISTRY_ID, characteristic, RegistryMainEntryType.CHARACTERISTIC)
+        self.CHARACTERISTICS_DERIVED.register(characteristic.REGISTRY_ID, characteristic)
 
     def registerSkill(self, skill: Type[SkillBase]):
         # TODO raise errors
-        self.registry.MAIN.register(skill.REGISTRY_ID, skill, RegistryMainEntryType.SKILL)
-        self.registry.SKILLS.register(skill.REGISTRY_ID, skill)
+        self.MAIN.register(skill.REGISTRY_ID, skill, RegistryMainEntryType.SKILL)
+        self.SKILLS.register(skill.REGISTRY_ID, skill)
 
     def registerResourcePool(self, pool: type[ResourcePoolBase]):
-        self.registry.MAIN.register(pool.REGISTRY_ID, pool, RegistryMainEntryType.RESOURCE_POOL)
-        self.registry.RESOURCE_POOLS.register(pool.REGISTRY_ID, pool)
+        self.MAIN.register(pool.REGISTRY_ID, pool, RegistryMainEntryType.RESOURCE_POOL)
+        self.RESOURCE_POOLS.register(pool.REGISTRY_ID, pool)
 
     def registerItem(self, itemType: type[ItemBase]):
-        self.registry.MAIN.register(itemType.REGISTRY_ID, itemType, RegistryMainEntryType.ITEM)
-        self.registry.RESOURCE_POOLS.register(itemType.REGISTRY_ID, itemType)
+        self.MAIN.register(itemType.REGISTRY_ID, itemType, RegistryMainEntryType.ITEM)
+        self.RESOURCE_POOLS.register(itemType.REGISTRY_ID, itemType)
+
+class Singleton(type):
+    instance = None
+    def __call__(cls, *args, **kwargs):
+        if not hasattr(cls, "instance"):
+            cls.instance = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls.instance
+
+    def __new__(cls, clsname, bases, attrs):
+        @classmethod
+        def clear(cls):
+            if hasattr(cls, "instance"):
+                del cls.instance 
+        attrs["clear"] = clear
+        return type(clsname, bases, attrs)
+
+    def clear(self):
+        pass
+
+class TTForgeSystem(metaclass=Singleton):
+
+    def __init__(self):
+        self.registry = TTForgeSystemRegistries()

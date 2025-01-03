@@ -23,8 +23,8 @@ def test_minimal_definition():
             return 10 + STR
 
     testSystem = TTForgeSystem()
-    testSystem.registerCharacteristicPrimary(Strength)
-    testSystem.registerCharacteristicDerived(StrengthMod)
+    testSystem.registry.registerCharacteristicPrimary(Strength)
+    testSystem.registry.registerCharacteristicDerived(StrengthMod)
 
     @character(testSystem)
     class Character(CharacterBase):

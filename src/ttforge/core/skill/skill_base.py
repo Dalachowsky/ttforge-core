@@ -2,6 +2,8 @@
 from abc import abstractmethod
 from typing import *
 
+from ttforge.system import TTForgeSystem
+
 from ttforge.core import TTForgeObject, ttforge_object
 from ttforge.core.characteristic import CharacteristicBase, ICharacteristicObserver
 from ttforge.core.characteristic import CharacteristicUpdateEvent
@@ -51,5 +53,6 @@ def skill(namespace: str):
     """Decorator for @skill"""
     def decorator(cls: type[SkillBase]):
         ttforge_object(namespace)(cls)
+        TTForgeSystem().registry.registerSkill(cls)
         return cls
     return decorator

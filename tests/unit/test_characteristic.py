@@ -2,6 +2,10 @@
 import pytest
 import pytest_mock
 
+from ttforge.system.system import TTForgeSystem
+
+from tests.unit.fixture import clear_TTForge_singleton
+
 from ttforge.core.characteristic.exceptions import CharacteristicOutOfBounds
 from ttforge.core import TTForgeObjectInvalid
 from ttforge.core.characteristic import *
@@ -21,6 +25,7 @@ def test_minimal_definition():
     assert Characteristic.ABBREV == "TSTCHRCTRSTC"
     assert Characteristic.ID == "test_characteristic"
     assert Characteristic.REGISTRY_ID == "ns:test_characteristic"
+    assert TTForgeSystem().registry.CHARACTERISTICS.get(Characteristic.REGISTRY_ID) == Characteristic
 
 def test_validate_no_name():
 

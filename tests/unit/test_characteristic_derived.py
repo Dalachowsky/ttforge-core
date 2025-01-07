@@ -2,6 +2,8 @@
 import pytest
 from typing import *
 
+from tests.unit.fixture import clear_TTForge_singleton
+
 from ttforge.core.characteristic import CharacteristicDerivedBase, characteristicDerived
 from ttforge.core.characteristic import characteristicPrimary
 from ttforge.core.characteristic import CharacteristicPrimary

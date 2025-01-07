@@ -1,6 +1,8 @@
 
 import pytest
 
+from tests.unit.fixture import clear_TTForge_singleton
+
 from ttforge.core.item import *
 
 NS = "test"

@@ -2,12 +2,13 @@ import logging
 import random
 from typing import *
 from abc import ABC, abstractmethod
-
 from .characteristic_base import CharacteristicBase, characteristic_base, ICharacteristicObserver, CharacteristicUpdateEvent
 from .exceptions import CharacteristicInvalid
 
 from ttforge.core.dice import IDie
 from ttforge.core.exception import DoesNotDepend
+
+from ttforge.system import TTForgeSystem
 
 LOG = logging.getLogger(f"{__name__}")
 
@@ -66,6 +67,7 @@ def characteristicDerived(namespace: str):
             raise CharacteristicInvalid(f"{cls.REGISTRY_ID} DEPENDENCIES not defined")
         if len(cls.DEPENDENCIES) == 0:
             raise CharacteristicInvalid(f"{cls.REGISTRY_ID}: DEPENDENCIES list is empty")
+        TTForgeSystem().registry.registerCharacteristicDerived(cls)
         return cls
     return decorator
 

@@ -2,6 +2,7 @@ from typing import *
 from abc import ABC, abstractmethod
 
 from ttforge.core.exception import TTForgeException
+from ttforge.core.ttforge_object import TTForgeObject
 
 class RegistryBase(ABC):
 
@@ -21,5 +22,5 @@ class RegistryBase(ABC):
     def keys(self):
         return self._registry.keys()
 
-    def objects(self):
+    def objects(self) -> List[TTForgeObject]:
         return self._registry.values()

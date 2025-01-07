@@ -3,6 +3,8 @@ import logging
 from typing import *
 from abc import ABC, abstractmethod
 
+from ttforge.system import TTForgeSystem
+
 from .characteristic_base import CharacteristicBase, characteristic_base
 from .exceptions import CharacteristicInvalid, CharacteristicOutOfBounds
 
@@ -16,6 +18,7 @@ def characteristicPrimary(namespace: str):
             cls.setValue = valueSetterBoundsCheck
         else:
             cls.setValue = valueSetterRaw
+        TTForgeSystem().registry.registerCharacteristicPrimary(cls)
         return cls
     return decorator
 

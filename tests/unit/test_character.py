@@ -1,4 +1,6 @@
 
+from tests.unit.fixture import clear_TTForge_singleton
+
 from ttforge.system import TTForgeSystem
 from ttforge.core.character import CharacterBase, character
 from ttforge.core.characteristic import CharacteristicPrimary, characteristicPrimary, CharacteristicDerivedBase, characteristicDerived
@@ -23,8 +25,6 @@ def test_minimal_definition():
             return 10 + STR
 
     testSystem = TTForgeSystem()
-    testSystem.registry.registerCharacteristicPrimary(Strength)
-    testSystem.registry.registerCharacteristicDerived(StrengthMod)
 
     @character(testSystem)
     class Character(CharacterBase):

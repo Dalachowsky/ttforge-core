@@ -59,6 +59,7 @@ def tagIcon(iconPath: str):
     return decorator
 
 def ttforge_object(namespace: str, tags: Dict[str, Any] = {}):
+    """Decorator for TTForgeObject"""
     def decorator(cls: type[TTForgeObject]):
         if cls.NAME is None:
             raise TTForgeObjectInvalid("Characteristic does not have name set")

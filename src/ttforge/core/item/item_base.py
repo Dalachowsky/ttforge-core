@@ -4,6 +4,8 @@ import re
 from ttforge.core import TTForgeObject, ttforge_object, tag
 from ttforge.core.exception import TTForgeException
 
+from ttforge.system import TTForgeSystem
+
 class TTForgeOuncesParsingError(TTForgeException):
     def __init__(self, weightString: str) -> None:
         super().__init__(f"Cannot parse ounces from \"{weightString}\"")
@@ -59,5 +61,6 @@ def item(namespace: str):
 
         if isinstance(cls.WEIGHT, str):
             cls.WEIGHT = parseOunces(cls.WEIGHT)
+        TTForgeSystem().registry.registerItem(cls)
         return cls
     return decorator

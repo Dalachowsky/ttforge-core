@@ -14,10 +14,12 @@ NS = "test"
 @pytest.fixture(autouse=True)
 def clear_singleton():
     yield
-    TTForgeSystem.clear()
+    TTForgeSystem().clear()
 
 def test_singleton():
-    pass
+    a = TTForgeSystem()
+    b = TTForgeSystem()
+    assert a == b
 
 def test_register_each_type():
     @characteristicPrimary(NS)
@@ -48,11 +50,6 @@ def test_register_each_type():
         NAME = "Sword"
 
     sys = TTForgeSystem()
-    sys.registry.registerCharacteristicPrimary(MockCharacteristic)
-    sys.registry.registerCharacteristicDerived(MockModifier)
-    sys.registry.registerSkill(MockSkill)
-    sys.registry.registerResourcePool(HealthPool)
-    sys.registry.registerItem(Sword)
 
 def test_duplicate_registry_ID_different_type():
 
@@ -60,11 +57,7 @@ def test_duplicate_registry_ID_different_type():
     class MockCharacteristic(CharacteristicPrimary):
         NAME = "Mock"
 
-    @skill(NS)
-    class MockSkill(SkillBase):
-        NAME = "Mock"
-
-    sys = TTForgeSystem()
-    sys.registry.registerCharacteristicPrimary(MockCharacteristic)
     with pytest.raises(DuplicateEntry):
-        sys.registry.registerSkill(MockSkill)
+        @skill(NS)
+        class MockSkill(SkillBase):
+            NAME = "Mock"

@@ -1,4 +1,8 @@
 
+import os
+import sys
+import logging
+import importlib
 from typing import *
 
 from ttforge.core.registry import RegistryDict
@@ -10,6 +14,8 @@ if TYPE_CHECKING:
     from ttforge.core.item import ItemBase
     from ttforge.core.resourcepool import ResourcePoolBase
     from ttforge.core.skill import SkillBase
+
+LOG = logging.getLogger(f"{__name__}")
 
 class TTForgeSystemRegistries:
 
@@ -71,3 +77,30 @@ class TTForgeSystem:
 
     def clear(self):
         self.registry = TTForgeSystemRegistries()
+
+    def importPackages(self, modulesPath: str):
+        sys.path.append(modulesPath)
+        for moduleDir in os.listdir(modulesPath):
+            self.importPackage(os.path.join(modulesPath, moduleDir))
+
+    def importPackage(self, packagePath: str):
+        package = os.path.split(packagePath)[-1]
+        if not os.path.exists(os.path.join(packagePath, "manifest.json")):
+            LOG.warning(f"Module \"{package}\" does not contain manifest.json")
+            return
+        
+        importOrder = [
+            "characteristics",
+            "skills",
+            "items",
+        ]
+
+        for m in importOrder:
+            # Import static classes
+            try:
+                importlib.import_module(f"{package}.{m}")
+            except ModuleNotFoundError:
+                LOG.warning(f"{package}.{m} not found")
+
+        # Import .json files
+        # mDataPath = os.path.join(dataPath, m)

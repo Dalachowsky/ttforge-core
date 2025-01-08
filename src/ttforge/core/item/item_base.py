@@ -4,6 +4,7 @@ import re
 from ttforge.core import TTForgeObject, ttforge_object, tag
 from ttforge.core.exception import TTForgeException
 
+from ttforge.core import TTForgeObjectDecorator
 from ttforge.system import TTForgeSystem
 
 class TTForgeOuncesParsingError(TTForgeException):
@@ -57,7 +58,7 @@ def tagItemSlot(slotID: str):
 
 def item(namespace: str):
     def decorator(cls: type[ItemBase]):
-        ttforge_object(namespace)(cls)
+        TTForgeObjectDecorator(namespace)(cls)
 
         if isinstance(cls.WEIGHT, str):
             cls.WEIGHT = parseOunces(cls.WEIGHT)

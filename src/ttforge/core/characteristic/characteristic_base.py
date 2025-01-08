@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 from ttforge.core import TTForgeObject, ttforge_object, ttforgeObjectClassFromJSON
+from ttforge.core import TTForgeObjectDecorator
 
 from .exceptions import CharacteristicInvalid
 
@@ -60,7 +61,7 @@ def generateCharacteristicAbbrev(name: str):
 def characteristic_base(namespace: str):
     '''Decorator for Characteristic'''
     def decorator(cls: type[CharacteristicBase]):
-        ttforge_object(namespace)(cls)
+        TTForgeObjectDecorator(namespace)(cls)
         # Set abbreviated name
         if cls.ABBREV is None:
             cls.ABBREV = generateCharacteristicAbbrev(cls.NAME)

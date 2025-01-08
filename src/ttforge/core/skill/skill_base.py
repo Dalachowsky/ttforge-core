@@ -4,7 +4,7 @@ from typing import *
 
 from ttforge.system import TTForgeSystem
 
-from ttforge.core import TTForgeObject, ttforge_object
+from ttforge.core import TTForgeObject, TTForgeObjectDecorator
 from ttforge.core.characteristic import CharacteristicBase, ICharacteristicObserver
 from ttforge.core.characteristic import CharacteristicUpdateEvent
 from ttforge.core.exception import DoesNotDepend
@@ -52,7 +52,7 @@ class SkillBase(TTForgeObject, ICharacteristicObserver):
 def skill(namespace: str):
     """Decorator for @skill"""
     def decorator(cls: type[SkillBase]):
-        ttforge_object(namespace)(cls)
+        TTForgeObjectDecorator(namespace)(cls)
         TTForgeSystem().registry.registerSkill(cls)
         return cls
     return decorator

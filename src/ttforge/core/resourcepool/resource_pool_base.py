@@ -3,7 +3,7 @@ from typing import *
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from ttforge.core import TTForgeObject, ttforge_object
+from ttforge.core import TTForgeObject, TTForgeObjectDecorator
 
 from ttforge.system import TTForgeSystem
 
@@ -64,7 +64,7 @@ class ResourcePoolBase(TTForgeObject):
 
 def resourcePool(namespace: str):
     def decorator(cls: type[ResourcePoolBase]):
-        ttforge_object(namespace)(cls)
+        TTForgeObjectDecorator(namespace)(cls)
         TTForgeSystem().registry.registerResourcePool(cls)
         return cls
     return decorator

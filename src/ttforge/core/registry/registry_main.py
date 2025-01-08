@@ -22,17 +22,17 @@ class RegistryMainEntryType(Enum):
 @dataclass
 class RegistryMainEntry:
     obj: TTForgeObject
-    objType: RegistryMainEntryType
+    objType: str
 
 class RegistryMain(RegistryDict):
 
     def __init__(self):
         super().__init__(objectType=TTForgeObject)
 
-    def register(self, entryID: str, object, T: RegistryMainEntryType):
+    def register(self, entryID: str, object, entryType: str):
         if entryID in self._registry:
-            raise DuplicateEntry(entryID, f"Type of the previous entry:{self.get(entryID).objType.name}")
-        entry = RegistryMainEntry(obj=object, objType=T)
+            raise DuplicateEntry(entryID, f"Type of the previous entry:{self.get(entryID).objType}")
+        entry = RegistryMainEntry(obj=object, objType=entryType)
         self._registry[entryID] = entry
 
     def get(self, regID: str) -> RegistryMainEntry:

@@ -5,9 +5,12 @@ import logging
 import importlib
 from typing import *
 
+from ttforge.core.exception import RegistrationError
 from ttforge.core.registry import RegistryDict
 from ttforge.core.registry import RegistryMain
+from ttforge.core.registry.registry_base import RegistryBase
 from ttforge.core.registry.registry_main import RegistryMainEntryType
+from ttforge.core.ttforge_object import TTForgeObject
 
 if TYPE_CHECKING:
     from ttforge.core.characteristic import CharacteristicPrimary, CharacteristicDerivedBase
@@ -27,27 +30,37 @@ class TTForgeSystemRegistries:
         self.RESOURCE_POOLS = RegistryDict(type['ResourcePoolBase'])
         self.ITEMS = RegistryDict(type['ItemBase'])
 
+    def register(self, registryName: str, obj: type[TTForgeObject]):
+        if not hasattr(self, registryName):
+            raise RegistrationError(f"\"{registryName}\" is not a valid registry")
+        reg = getattr(self, registryName)
+        if not isinstance(reg, RegistryBase):
+            raise RegistrationError(f"\"{registryName}\" is not a valid registry")
+        
+        self.MAIN.register(obj.REGISTRY_ID, obj, registryName)
+        reg.register(obj.REGISTRY_ID, obj)
+
     def registerCharacteristicPrimary(self, characteristic: type['CharacteristicPrimary']):
         # TODO raise
-        self.MAIN.register(characteristic.REGISTRY_ID, characteristic, RegistryMainEntryType.CHARACTERISTIC)
+        self.MAIN.register(characteristic.REGISTRY_ID, characteristic, RegistryMainEntryType.CHARACTERISTIC.name)
         self.CHARACTERISTICS.register(characteristic.REGISTRY_ID, characteristic)
 
     def registerCharacteristicDerived(self, characteristic: type['CharacteristicDerivedBase']):
         # TODO raise
-        self.MAIN.register(characteristic.REGISTRY_ID, characteristic, RegistryMainEntryType.CHARACTERISTIC)
+        self.MAIN.register(characteristic.REGISTRY_ID, characteristic, RegistryMainEntryType.CHARACTERISTIC.name)
         self.CHARACTERISTICS_DERIVED.register(characteristic.REGISTRY_ID, characteristic)
 
     def registerSkill(self, skill: type['SkillBase']):
         # TODO raise errors
-        self.MAIN.register(skill.REGISTRY_ID, skill, RegistryMainEntryType.SKILL)
+        self.MAIN.register(skill.REGISTRY_ID, skill, RegistryMainEntryType.SKILL.name)
         self.SKILLS.register(skill.REGISTRY_ID, skill)
 
     def registerResourcePool(self, pool: type['ResourcePoolBase']):
-        self.MAIN.register(pool.REGISTRY_ID, pool, RegistryMainEntryType.RESOURCE_POOL)
+        self.MAIN.register(pool.REGISTRY_ID, pool, RegistryMainEntryType.RESOURCE_POOL.name)
         self.RESOURCE_POOLS.register(pool.REGISTRY_ID, pool)
 
     def registerItem(self, itemType: type['ItemBase']):
-        self.MAIN.register(itemType.REGISTRY_ID, itemType, RegistryMainEntryType.ITEM)
+        self.MAIN.register(itemType.REGISTRY_ID, itemType, RegistryMainEntryType.ITEM.name)
         self.RESOURCE_POOLS.register(itemType.REGISTRY_ID, itemType)
 
 class Singleton(type):

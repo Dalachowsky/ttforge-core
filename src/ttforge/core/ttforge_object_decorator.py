@@ -86,9 +86,11 @@ class TTForgeDecoratorBuilder:
         self._targetRegistry = registryName
 
     def build(self) -> Callable[[str], Callable[[type[TTForgeObject]], type[TTForgeObject]]]:
-        if self._targetRegistry is None:
-            raise TTForgeDecoratorInvalid("Decorator does not have target registry specified")
-        self.addStep(lambda cls: TTForgeSystem().registry.)
+        if self._targetRegistry is not None:
+            def registerStep(cls: type[TTForgeObject], reg: str):
+                TTForgeSystem().registry.register(reg, cls)
+                return cls
+            self.addStep(lambda cls, reg=self._targetRegistry: registerStep(cls, reg))
         return lambda NS, steps=self._decorator_steps, base=self._baseDecorator: TTForgeObjectDecorator(NS, steps, base=base)
 
 def tag(tagID: str, tagValue: Any = None):

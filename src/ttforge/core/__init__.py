@@ -1,4 +1,7 @@
 
+from .ttforge_entity import TTForgeEntity
+from .ttforge_entity import NoInventory
+
 from .ttforge_object import TTForgeObject, TTForgeObjectInvalid
 from .ttforge_object import objectNameToID
 

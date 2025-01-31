@@ -3,7 +3,7 @@ from typing import *
 
 from .registry_base import RegistryBase
 
-from ttforge.core.exception import DuplicateEntry
+from ttforge.core.exception import DuplicateEntry, EntryNotFound
 
 class RegistryDict(RegistryBase):
 
@@ -16,4 +16,6 @@ class RegistryDict(RegistryBase):
         self._registry[entryID] = object
 
     def get(self, regID: str):
+        if regID not in self._registry:
+            raise EntryNotFound(regID)
         return self._registry[regID]

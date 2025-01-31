@@ -3,8 +3,8 @@ from typing import *
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from ttforge.core import TTForgeObject, ttforge_object, ttforgeObjectClassFromJSON
-from ttforge.core import TTForgeObjectDecorator
+from ttforge.core.object import TTForgeObject
+from ttforge.core.object.decorator import TTForgeObjectDecorator, ttforgeObjectClassFromJSON
 
 from .exceptions import CharacteristicInvalid
 

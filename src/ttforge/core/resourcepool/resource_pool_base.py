@@ -3,7 +3,8 @@ from typing import *
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from ttforge.core import TTForgeObject, TTForgeObjectDecorator
+from ttforge.core.object import TTForgeObject 
+from ttforge.core.object.decorator import TTForgeObjectDecorator
 
 from ttforge.system import TTForgeSystem
 

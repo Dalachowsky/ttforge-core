@@ -4,7 +4,8 @@ from typing import *
 
 from ttforge.system import TTForgeSystem
 
-from ttforge.core import TTForgeObject, TTForgeObjectDecorator
+from ttforge.core.object import TTForgeObject 
+from ttforge.core.object.decorator import TTForgeObjectDecorator
 from ttforge.core.characteristic import CharacteristicBase, ICharacteristicObserver
 from ttforge.core.characteristic import CharacteristicUpdateEvent
 from ttforge.core.exception import DoesNotDepend

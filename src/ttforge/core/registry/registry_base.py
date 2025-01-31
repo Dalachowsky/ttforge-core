@@ -2,7 +2,7 @@ from typing import *
 from abc import ABC, abstractmethod
 
 from ttforge.core.exception import TTForgeException
-from ttforge.core.ttforge_object import TTForgeObject
+from ttforge.core.object import TTForgeObject
 
 class RegistryBase(ABC):
 

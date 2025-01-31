@@ -3,7 +3,7 @@ from typing import *
 from enum import Enum, auto
 from dataclasses import dataclass
 
-from ...core import TTForgeObject
+from ttforge.core.object import TTForgeObject
 from ttforge.core.registry import RegistryDict
 from ttforge.core.exception import DuplicateEntry
 

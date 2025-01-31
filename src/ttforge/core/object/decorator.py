@@ -3,7 +3,7 @@ import logging
 from typing import *
 
 from ttforge.core.exception import TTForgeException
-from ttforge.system.system import TTForgeSystem
+from ttforge.system import TTForgeSystem
 
 from .ttforge_object import TTForgeObject, TTForgeObjectInvalid, generateRegistryID, objectNameToID, TTForgeValidateRegistryIDError, validateRegistryID
 

@@ -1,7 +1,8 @@
 
 import re
 
-from ttforge.core import TTForgeObject, ttforge_object, tag
+from ttforge.core.object import TTForgeObject
+from ttforge.core.object.decorator import tag, TTForgeObjectDecorator
 from ttforge.core.exception import TTForgeException
 
 from ttforge.core import TTForgeObjectDecorator

@@ -1,2 +1,2 @@
 
-from .character_base import CharacterBase, character
+from .character_base import CharacterEntity, character

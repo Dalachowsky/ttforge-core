@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from typing import *
 
 from ttforge.system import TTForgeSystem
+from ttforge.core.entity import TTForgeEntity
 from ttforge.core.characteristic import CharacteristicBase
 from ttforge.core.characteristic import CharacteristicPrimary, CharacteristicDerivedBase, sortDerivedCharacteristics
 from ttforge.core.exception import TTForgeException
@@ -15,7 +16,7 @@ class DuplicateCharacteristic(TTForgeException):
     def __init__(self, characteristicID: str) -> None:
         super().__init__(f"Characteristic {characteristicID} already present")
 
-class CharacterBase(ABC):
+class CharacterEntity(TTForgeEntity):
 
     def __init__(self):
         self._name = ""

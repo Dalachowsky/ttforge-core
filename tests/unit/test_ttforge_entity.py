@@ -1,7 +1,10 @@
 
 import pytest
+from typing import *
+from pydantic import BaseModel
 
-from ttforge.core import TTForgeEntity, NoInventory
+from ttforge.core.entity import TTForgeEntity, NoInventory
+from ttforge.schema.inventory import InventorySchema
 
 class TestTTForgeEntity:
     def test_minimal_definition(self):
@@ -12,20 +15,27 @@ class TestTTForgeEntity:
 class TestTTForgeEntityInventory:
     def test_add_inventory(self):
         entity = TTForgeEntity()
-        entity.addInventory()
+        entity.deserializeInventory({"content": []})
         assert entity.hasInventory()
 
     def test_serialize_inventory(self):
         entity = TTForgeEntity()
-        entity.addInventory()
+        entity.deserializeInventory()
         d = entity.serialize()
         assert "inventory" in d
 
     def test_deserialize_inventory(self):
         d = {}
-        d["inventory"] = []
-        entity = TTForgeEntity.deserialize(d)
-        assert entity.hasInventory()
+        d["inventory"] = {"content": []}
+
+        class Model(BaseModel):
+            inventory: Optional[InventorySchema] = None
+
+
+        entity = TTForgeEntity
+        entity.SERIAL_MODEL = Model
+        e = entity.deserialize(d)
+        assert e.hasInventory()
 
     def test_give_item_no_inventory(self):
         entity = TTForgeEntity()
@@ -34,7 +44,7 @@ class TestTTForgeEntityInventory:
 
     def test_give_item_with_inventory(self):
         entity = TTForgeEntity()
-        entity.addInventory()
+        entity.deserializeInventory()
         try:
             entity.give("item")
         except NoInventory:

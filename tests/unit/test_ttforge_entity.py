@@ -4,7 +4,7 @@ from typing import *
 from pydantic import BaseModel
 
 from ttforge.core.entity import TTForgeEntity, NoInventory
-from ttforge.schema.inventory import InventorySchema
+from ttforge.schema.entity import InventorySchema
 
 class TestTTForgeEntity:
     def test_minimal_definition(self):

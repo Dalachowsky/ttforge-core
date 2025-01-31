@@ -3,7 +3,7 @@ from typing import *
 from dataclasses import dataclass
 from pydantic import BaseModel
 
-from ttforge.schema.inventory import InventorySchema, InventoryEntryModel
+from ttforge.schema.entity import InventorySchema, InventoryEntryModel
 from ttforge.core.exception import EntityDeserializationError, EntryNotFound
 from ttforge.system import TTForgeSystem
 

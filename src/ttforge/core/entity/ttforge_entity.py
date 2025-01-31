@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 
 from ttforge.core.inventory import Inventory
 from ttforge.core.exception import TTForgeException, EntityDeserializationError
-from ttforge.schema.entity import TTForgeEntityModel
+from ttforge.schema.entity import TTForgeEntityBaseModel
 
 class NoInventory(TTForgeException):
     def __init__(self, msg: str = "") -> None:

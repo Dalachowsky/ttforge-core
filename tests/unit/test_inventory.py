@@ -6,7 +6,7 @@ from tests.unit.fixture import clear_TTForge_singleton
 
 from ttforge.core.inventory import Inventory, InventoryDeserializationError
 from ttforge.core.item import ItemBase, item
-from ttforge.schema.inventory import InventorySchema, InventoryEntryModel
+from ttforge.schema.entity import InventorySchema, InventoryEntryModel
 from ttforge.system import TTForgeSystem
 
 NS = "test"

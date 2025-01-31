@@ -1,7 +1,8 @@
 
 import pytest
 
-from ttforge.core import TTForgeObject, tag, TTForgeObjectDecorator, tagIcon
+from ttforge.core.object import TTForgeObject 
+from ttforge.core.object.decorator import tag, TTForgeObjectDecorator, tagIcon
 from ttforge.core.exception import TTForgeException
 
 NS = "test"

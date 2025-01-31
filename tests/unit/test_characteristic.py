@@ -7,7 +7,7 @@ from ttforge.system.system import TTForgeSystem
 from tests.unit.fixture import clear_TTForge_singleton
 
 from ttforge.core.characteristic.exceptions import CharacteristicOutOfBounds
-from ttforge.core import TTForgeObjectInvalid
+from ttforge.core.object import TTForgeObjectInvalid
 from ttforge.core.characteristic import *
 from ttforge.core.dice import D6
 

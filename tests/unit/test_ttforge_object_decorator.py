@@ -1,7 +1,8 @@
 
 import pytest
 
-from ttforge.core import TTForgeDecoratorBuilder, TTForgeObject, TTForgeObjectInvalid
+from ttforge.core.object import TTForgeObject, TTForgeObjectInvalid
+from ttforge.core.object.decorator import TTForgeDecoratorBuilder
 
 NS = "test"
 

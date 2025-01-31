@@ -10,7 +10,7 @@ from ttforge.core.registry import RegistryDict
 from ttforge.core.registry import RegistryMain
 from ttforge.core.registry.registry_base import RegistryBase
 from ttforge.core.registry.registry_main import RegistryMainEntryType
-from ttforge.core.ttforge_object import TTForgeObject
+from ttforge.core.object import TTForgeObject
 
 if TYPE_CHECKING:
     from ttforge.core.characteristic import CharacteristicPrimary, CharacteristicDerivedBase
@@ -61,7 +61,7 @@ class TTForgeSystemRegistries:
 
     def registerItem(self, itemType: type['ItemBase']):
         self.MAIN.register(itemType.REGISTRY_ID, itemType, RegistryMainEntryType.ITEM.name)
-        self.RESOURCE_POOLS.register(itemType.REGISTRY_ID, itemType)
+        self.ITEMS.register(itemType.REGISTRY_ID, itemType)
 
 class Singleton(type):
     instance = None

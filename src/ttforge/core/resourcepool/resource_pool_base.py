@@ -6,9 +6,9 @@ from dataclasses import dataclass
 from ttforge.core.object import TTForgeObject 
 from ttforge.core.object.decorator import TTForgeObjectDecorator
 
-from ttforge.system import TTForgeSystem
+from ttforge.schema.entity import ResourcePoolSchema, ResourcePoolType
 
-ResourcePoolType = int | float
+from ttforge.system import TTForgeSystem
 
 @dataclass
 class ResourcePoolUpdateEvent:
@@ -24,11 +24,14 @@ class IResourcePoolObserver(ABC):
 
 class ResourcePoolBase(TTForgeObject):
 
-    def __init__(self, value: ResourcePoolType, maxval: ResourcePoolType, minval: ResourcePoolType = 0) -> None:
-        self._min = minval
+    def __init__(self, value: ResourcePoolType, maxval: Optional[ResourcePoolType] = None, minval: Optional[ResourcePoolType] = None) -> None:
+        if minval is not None:
+            self._min = minval
+        else:
+            self._min = 0
         self._max = maxval
         self._observers: List[IResourcePoolObserver] = []
-        self._value = minval
+        self._value = self._min
         self.set(value)
 
     def get(self):
@@ -47,11 +50,23 @@ class ResourcePoolBase(TTForgeObject):
         self._value = value
         if value < self._min:
             self._value = self._min
-        if value > self._max:
+        if self._max is not None and value > self._max:
             self._value = self._max
 
         evt.new = self._value
         self._notifyObservers(evt)
+
+    @classmethod
+    def deserialize(cls, data: dict):
+        d = ResourcePoolSchema.model_validate(data)
+        kwargs = {}
+        if d.value is not None:
+            kwargs["value"] = d.value
+        if d.minVal is not None:
+            kwargs["minval"] = d.minVal
+        kwargs["maxval"] = d.maxVal
+        obj = cls(**kwargs)
+        return obj
 
     def registerObserver(self, observer: IResourcePoolObserver):
         self._observers.append(observer)

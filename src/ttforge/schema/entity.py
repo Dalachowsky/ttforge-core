@@ -2,6 +2,8 @@
 from typing import *
 from pydantic import BaseModel, Field
 
+ResourcePoolType = float | int
+
 # Inventory
 # ---------
 
@@ -13,6 +15,14 @@ class InventoryEntryModel(BaseModel):
 class InventorySchema(BaseModel):
     content: List[InventoryEntryModel] = []
 
+# Resource pools
+# --------------
+
+class ResourcePoolSchema(BaseModel):
+    id: str 
+    value: ResourcePoolType
+    minVal: Optional[ResourcePoolType] = None
+    maxVal: Optional[ResourcePoolType] = None
 
 # Base model
 # ----------

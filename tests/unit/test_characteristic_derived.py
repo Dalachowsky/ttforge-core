@@ -11,7 +11,7 @@ from ttforge.core.exception import DoesNotDepend
 
 NS = "ns"
 
-@characteristicPrimary(NS)
+@CharacteristicPrimary.numeric_int(NS)
 class MockCharacteristic(CharacteristicPrimary):
     NAME = "Mock"
 

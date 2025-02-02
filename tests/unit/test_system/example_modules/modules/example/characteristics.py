@@ -5,7 +5,7 @@ from ttforge.core.characteristic import CharacteristicPrimary, characteristicPri
 from ttforge.core.characteristic import CharacteristicDerivedBase, characteristicDerived
 
 
-@characteristicPrimary(NS)
+@CharacteristicPrimary.numeric_int(NS)
 class Primary(CharacteristicPrimary):
     NAME = "primary"
 

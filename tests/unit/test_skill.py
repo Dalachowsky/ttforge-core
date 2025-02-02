@@ -8,7 +8,7 @@ from ttforge.core.characteristic import CharacteristicPrimary, characteristicPri
 
 NS = "test"
 
-@characteristicPrimary(NS)
+@CharacteristicPrimary.numeric_int(NS)
 class CharacteristicMock(CharacteristicPrimary):
     NAME = "Mock"
 

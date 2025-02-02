@@ -22,6 +22,10 @@ def test_minimal_definition():
         def rollCheck(self):
             return 0
 
+        @classmethod
+        def deserialize(cls, value: str):
+            pass
+
     assert Characteristic.ABBREV == "TSTCHRCTRSTC"
     assert Characteristic.ID == "test_characteristic"
     assert Characteristic.REGISTRY_ID == "ns:test_characteristic"
@@ -44,7 +48,7 @@ def test_double_inheritance():
         def rollCheck(self):
             return self.DIE.roll()
     
-    @characteristicPrimary(NS)
+    @CharacteristicPrimary.numeric_int(NS)
     class CharacteristicTest(Characteristic):
         NAME = "Test"
 
@@ -54,11 +58,9 @@ def test_double_inheritance():
 @pytest.mark.parametrize("min, max", [(0, 100), (-100, 100), (0, None)])
 def test_bounds_check(min, max):
 
-    @characteristicPrimary(NS)
+    @CharacteristicPrimary.numeric_int(NS, min, max)
     class Characteristic(CharacteristicPrimary):
         NAME = "Test characteristic"
-        MINVAL = min
-        MAXVAL = max
 
     with pytest.raises(CharacteristicOutOfBounds):
         Characteristic(min - 1)    
@@ -81,3 +83,32 @@ def test_fromJSON():
     assert Mock.ID == "mock"
     assert Mock.REGISTRY_ID == "ns:mock"
     assert Mock.ABBREV == "MOCK"
+
+class TestCharacteristicPrimaryDeserialize:
+
+    def test_deserialize_not_implemented(self):
+
+        with pytest.raises(NotImplementedError):
+            @characteristicPrimary(NS)
+            class Characteristic(CharacteristicPrimary):
+                NAME = "Test characteristic"
+
+    def test_deserialize_int(self):
+
+        @CharacteristicPrimary.numeric_int(NS)
+        class Foo(CharacteristicPrimary):
+            NAME = "Foo"
+
+        o = Foo.deserialize("100")
+        assert o.getBaseValue() == 100
+        assert isinstance(o.getBaseValue(), int)
+
+    def test_deserialize_float(self):
+
+        @CharacteristicPrimary.numeric_float(NS)
+        class Foo(CharacteristicPrimary):
+            NAME = "Foo"
+
+        o = Foo.deserialize("100.5")
+        assert pytest.approx(o.getBaseValue(), 0.1) == 100.5
+        assert isinstance(o.getBaseValue(), float)

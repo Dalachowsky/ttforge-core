@@ -4,6 +4,13 @@ from pydantic import BaseModel, Field
 
 ResourcePoolType = float | int
 
+# Characteristics
+# ---------------
+
+class CharacteristicSchema(BaseModel):
+    id: str
+    value: str
+
 # Inventory
 # ---------
 

@@ -56,6 +56,16 @@ class ResourcePoolBase(TTForgeObject):
         evt.new = self._value
         self._notifyObservers(evt)
 
+    def serialize(self):
+        serialized = ResourcePoolSchema(
+            id=self.REGISTRY_ID,
+            value=self._value,
+            minVal=self._min
+        )
+        if self._max is not None:
+            serialized.maxVal = self._max
+        return serialized.model_dump()
+
     @classmethod
     def deserialize(cls, data: dict):
         d = ResourcePoolSchema.model_validate(data)

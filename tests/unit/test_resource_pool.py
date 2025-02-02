@@ -71,6 +71,18 @@ class TestResourcePools:
         hp.set(0)
         assert o._eventCaptured
 
+    def test_serialize(self):
+        HP = TTForgeSystem().registry.RESOURCE_POOLS.get("test:hp")
+        hp = HP(50, 100)
+
+        expected = {
+            "id": "test:hp",
+            "value": 50,
+            "minVal": 0,
+            "maxVal": 100,
+        }
+        assert hp.serialize() == expected
+
     def test_deserialize(self):
         HP = TTForgeSystem().registry.RESOURCE_POOLS.get("test:hp")
 

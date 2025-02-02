@@ -3,6 +3,7 @@ import logging
 from typing import *
 from abc import ABC, abstractmethod
 
+from ttforge.schema.entity import CharacteristicSchema
 from ttforge.system import TTForgeSystem
 
 from .characteristic_base import CharacteristicBase, characteristic_base
@@ -55,6 +56,13 @@ class CharacteristicPrimary(CharacteristicBase):
     def rollCheck(self) -> int | float:
         # TODO raise notimplemented
         pass
+
+    def serialize(self):
+        serialized = CharacteristicSchema(
+            id=self.REGISTRY_ID,
+            value=str(self._value)
+        )
+        return serialized.model_dump()
 
     @classmethod
     def deserialize(cls, value: str) -> "CharacteristicPrimary":

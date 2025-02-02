@@ -112,3 +112,31 @@ class TestCharacteristicPrimaryDeserialize:
         o = Foo.deserialize("100.5")
         assert pytest.approx(o.getBaseValue(), 0.1) == 100.5
         assert isinstance(o.getBaseValue(), float)
+
+    def test_serialize_int(self):
+
+        @CharacteristicPrimary.numeric_int(NS)
+        class Foo(CharacteristicPrimary):
+            NAME = "Foo"
+
+        o = Foo(100)
+
+        expected = {
+            "id": Foo.REGISTRY_ID,
+            "value": "100"
+        }
+        assert o.serialize() == expected
+
+    def test_serialize_float(self):
+
+        @CharacteristicPrimary.numeric_float(NS)
+        class Foo(CharacteristicPrimary):
+            NAME = "Foo"
+
+        o = Foo(100.5)
+
+        expected = {
+            "id": Foo.REGISTRY_ID,
+            "value": "100.5"
+        }
+        assert o.serialize() == expected

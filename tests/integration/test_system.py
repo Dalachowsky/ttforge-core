@@ -22,7 +22,7 @@ def test_singleton():
     assert a == b
 
 def test_register_each_type():
-    @characteristicPrimary(NS)
+    @CharacteristicPrimary.numeric_int(NS)
     class MockCharacteristic(CharacteristicPrimary):
         NAME = "Mock"
 
@@ -53,7 +53,7 @@ def test_register_each_type():
 
 def test_duplicate_registry_ID_different_type():
 
-    @characteristicPrimary(NS)
+    @CharacteristicPrimary.numeric_int(NS)
     class MockCharacteristic(CharacteristicPrimary):
         NAME = "Mock"
 

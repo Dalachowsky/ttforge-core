@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from .fixture import clear_TTForge_singleton
 
 from ttforge.core import entity
+from ttforge.core.characteristic import CharacteristicPrimary
 from ttforge.core.exception import EntryNotFound
 from ttforge.core.entity import TTForgeEntity, NoInventory
 from ttforge.core.resourcepool.resource_pool_base import ResourcePoolBase, resourcePool
@@ -18,6 +19,31 @@ class TestTTForgeEntity:
         e = TTForgeEntity()
         d = e.serialize()
         e2 = TTForgeEntity.deserialize(d)
+
+@pytest.fixture()
+def MockCharacteristics():
+    @CharacteristicPrimary.numeric_int(NS)
+    class Foo(CharacteristicPrimary):
+        NAME = "Foo"
+
+@pytest.mark.usefixtures("MockCharacteristics")
+class TestTTForgeEntityCharacteristics:
+
+    def test_deserialize_characteristics(self):
+        characteristics = [
+            {
+                "id": "test:foo",
+                "value": "10"
+            }
+        ]
+
+        entity = TTForgeEntity()
+        assert not entity.hasCharacteristics()
+
+        entity.deserializeCharacteristics(characteristics)
+
+        assert entity.hasCharacteristics()
+        assert entity.getCharacteristic("test:foo").getValue() == 10
 
 class TestTTForgeEntityInventory:
     def test_add_inventory(self):

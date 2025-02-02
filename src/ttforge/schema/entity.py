@@ -40,5 +40,6 @@ class TTForgeEntityBaseModel(BaseModel):
     Entity SERIAL_MODELs should be based on this class
     and not INHERIT from it.
     """
+    characteristics: Optional[List[CharacteristicSchema]] = None
     inventory: Optional[InventorySchema] = None 
     resourcePools: Optional[List[ResourcePoolSchema]] = None

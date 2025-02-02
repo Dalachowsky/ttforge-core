@@ -3,8 +3,15 @@ import pytest
 from typing import *
 from pydantic import BaseModel
 
+from .fixture import clear_TTForge_singleton
+
+from ttforge.core import entity
+from ttforge.core.exception import EntryNotFound
 from ttforge.core.entity import TTForgeEntity, NoInventory
+from ttforge.core.resourcepool.resource_pool_base import ResourcePoolBase, resourcePool
 from ttforge.schema.entity import InventorySchema
+
+NS = "test"
 
 class TestTTForgeEntity:
     def test_minimal_definition(self):
@@ -49,3 +56,37 @@ class TestTTForgeEntityInventory:
             entity.give("item")
         except NoInventory:
             pytest.fail("NoInventory was raised unexpectedly")
+
+@pytest.fixture()
+def MockResourcePool():
+    @resourcePool(NS)
+    class MockResourcePool(ResourcePoolBase):
+        NAME = "Mock points"
+
+@pytest.mark.usefixtures("MockResourcePool")
+class TestTTForgeEntityResourcePool:
+
+    def test_deserialize_resource_pool(self):
+        entity = TTForgeEntity()
+
+        pools = [
+            {
+                "id": "test:mock_points",
+                "value": 0
+            }
+        ]
+        entity.deserializeResourcePools(pools)
+        assert entity.hasResourcePool("test:mock_points")
+        entity.getResourcePool("test:mock_points") # Raises Exception if pool not present
+
+    def test_deserialize_invalid_resource_pool(self):
+        entity = TTForgeEntity()
+
+        pools = [
+            {
+                "id": "test:invalid_pool"
+            }
+        ]
+        with pytest.raises(EntryNotFound):
+            entity.deserializeResourcePools(pools)
+

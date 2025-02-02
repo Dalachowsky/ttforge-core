@@ -5,11 +5,17 @@ from abc import ABC, abstractmethod
 
 from ttforge.core.inventory import Inventory
 from ttforge.core.exception import TTForgeException, EntityDeserializationError
+from ttforge.core.resourcepool import ResourcePoolBase
 from ttforge.schema.entity import TTForgeEntityBaseModel
+from ttforge.system import TTForgeSystem
 
 class NoInventory(TTForgeException):
     def __init__(self, msg: str = "") -> None:
         super().__init__(f"Entity does not have inventory. {msg}")
+
+class NoResourcePool(TTForgeException):
+    def __init__(self, resourcePoolID: str) -> None:
+        super().__init__(f"Entity does not have resource pool {resourcePoolID}")
 
 class TTForgeEntity(ABC):
 
@@ -18,6 +24,7 @@ class TTForgeEntity(ABC):
 
     def __init__(self) -> None:
         self._inventory: Optional[Inventory] = None
+        self._resourcePools: Dict[str, ResourcePoolBase] = {}
 
     @classmethod
     def deserialize(cls, d: dict):
@@ -52,6 +59,26 @@ class TTForgeEntity(ABC):
     def give(self, item):
         if not self.hasInventory():
             raise NoInventory(f"Cannot give item")
+
+    # --------------
+    # Resource pools
+    # --------------
+
+    def deserializeResourcePools(self, pools: List[dict]):
+        for entry in pools:
+            poolID = entry["id"]
+            if self.hasResourcePool(poolID):
+                raise EntityDeserializationError(f"Resource pool {poolID} already defined")
+            poolType = TTForgeSystem().registry.RESOURCE_POOLS.get(poolID)
+            self._resourcePools[poolID] = poolType.deserialize(entry)
+
+    def hasResourcePool(self, resourcePoolID: str):
+        return resourcePoolID in self._resourcePools
+
+    def getResourcePool(self, resourcePoolID: str):
+        if not self.hasResourcePool(resourcePoolID):
+            raise NoResourcePool(resourcePoolID)
+        return self._resourcePools[resourcePoolID]
 
     #########################################
     #
